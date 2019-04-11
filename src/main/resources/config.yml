@@ -1,0 +1,114 @@
+################################################################################
+################################################################################
+####################                                        ####################
+####################     Configuration of LambdaMotd        ####################
+####################                        by LambdAurora  ####################
+####################                                        ####################
+################################################################################
+################################################################################
+version: '1'
+
+# Placeholders:
+# - %version% = Server version
+# - %server% = Server name
+# - %online% = Number of players online.
+# - %max_players% = Number of max players.
+# - %player% = The player name.
+
+# The default name for the %player% placeholder.
+# Default: 'GUEST'
+default_name: 'Guest'
+
+# The player cache settings.
+player_cache:
+  # Enables the player cache. If disabled the %player% placeholder will not work and the player favicon will not work either.
+  # Default: false
+  enable: false
+  # The player cache duration. It's the duration of the cache, after that time, the cache will be reset.
+  # The duration is in ms. The default value is ~1month.
+  # Default: 2628000000
+  duration: 2628000000
+
+# Configuration of the MOTD.
+motd:
+  # Enables the custom MOTD.
+  # Default: true
+  enable: true
+  # The first line of the MOTD. Useless if random is activated.
+  # Default: 'Welcome to &6%server%&r!'
+  line1: 'Welcome to &6%server%&r!'
+  # The second line of the MOTD. Useless if random is activated.
+  # Default: '&aHave fun!'
+  line2: '&a${star} Have fun!'
+  # Enables random MOTD.
+  # Requires MOTD enabled.
+  # Default: false
+  random: false
+  # The random values of the motd.
+  # Requires to enable random MOTD.
+  random_values:
+    0:
+      line1: '&7Welcome on &8%server%&7!'
+      line2: '&7Have fun!'
+    1:
+      line1: '&9Welcome on &1%server%&9!'
+      line2: '&9Have fun!'
+    2:
+      line1: '&aWelcome on &2%server%&a!'
+      line2: '&aHave fun!'
+    3:
+      line1: '&bWelcome on &3%server%&b!'
+      line2: '&bHave fun!'
+    4:
+      line1: '&cWelcome on &4%server%&c!'
+      line2: '&cHave fun!'
+
+# The favicon settings
+favicon:
+  # The default favicon will be loaded.
+  # Default: true
+  enable: true
+  # Enable the random favicon. It selects a random favicon in the folder configs/lambdamotd/favicons
+  # Default: false
+  random: false
+  # Enable the player favicon. It put the player head if enabled.
+  # Default: false
+  player: false
+
+# Customize the player count.
+playercount:
+  # Enables the custom version for outdated client.
+  # Requires the custom player count to be false.
+  # Default: false
+  enable_custom_version: false
+  # The custom version to display if custom version enabled.
+  # Default: 'MC Server %version%'
+  custom_version: 'MC Server %version%'
+  # Enables custom player count.
+  # Note: It modifies the protocol specified in the packet, the "Server Out of Date" cannot be removed, to remove it please disable custom player count.
+  # Default: true
+  enable: true
+  # The custom player count.
+  # Default: '&7>>> &c%online%&7%&c%max_players%'
+  content: '&7>>> &c%online%&7/&c%max_players%'
+  # Enables random player count.
+  # Default: false
+  random: false
+  # List all the values that are displayed when the player count is random.
+  # Requires random enabled.
+  random_values:
+    - '&7>>> &c%online%&7/&c%max_players%'
+    - '&7>>> &6%online%&7/&6%max_players%'
+
+# Customize the player list.
+playerlist:
+  # Enables the custom player list.
+  # Default: false
+  enable: false
+  # The content of the custom player list.
+  contents:
+    - '&5======================================='
+    - '&aWelcome to &6%server%&a!'
+    - '&7Online(s): &c%online%&7/&c%max_players%'
+    - '&7Powered by &3Lambda&2MOTD&7!'
+    - '&5======================================='

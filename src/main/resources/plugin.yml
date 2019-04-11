@@ -1,0 +1,7 @@
+name: LambdaMotd
+version: ${version}
+authors: ${authors}
+description: A MOTD manager.
+
+main: io.github.lambdaurora.lambdamotd.LambdaMotd
+depend: [Shulker]

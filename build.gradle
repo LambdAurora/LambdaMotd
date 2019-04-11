@@ -1,0 +1,30 @@
+apply plugin: 'java'
+
+group = 'io.github.lambdaurora'
+version = '1.0.0'
+def authors = '[LambdAurora]'
+
+sourceCompatibility = 10
+
+repositories {
+    mavenLocal()
+    maven { url = 'https://aperlambda.github.io/maven' }
+    maven { url = 'https://mcelytra.github.io/maven/' }
+    maven { url = 'https://shulker.github.io/maven' }
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.shulker:shulker:1.0.0-SNAPSHOT'
+    compile 'org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT'
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "plugin.yml"
+
+        expand 'version': project.version.toString().replace("#", ""), 'authors': authors.toString()
+    }
+}
