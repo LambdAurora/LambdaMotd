@@ -13,6 +13,7 @@ import com.mojang.authlib.GameProfile;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -54,6 +55,8 @@ public class MotdListener implements PacketListener, Listener
             ShulkerPacketStatusOutServerInfo<?> packet = (ShulkerPacketStatusOutServerInfo<?>) packet_event.get_packet();
             var server_ping = packet.get_server_ping();
 
+            var players = Bukkit.getOnlinePlayers();
+
             if (config.has_custom_motd())
                 server_ping.set_motd(TextComponent.fromLegacyText(format_string(cached_player.name, config.pick_random_motd())));
 
@@ -80,10 +83,35 @@ public class MotdListener implements PacketListener, Listener
                         server_ping.set_favicon(cached_player.favicon);
             }
 
-            if (config.has_custom_playerlist()) {
+            var playerlist_mode = config.get_playerlist_mode();
+            Player players_array[] = new Player[players.size()];
+            players_array = players.toArray(players_array);
+
+            if (playerlist_mode == PlayerlistMode.NAME) {
+                server_ping.set_players(new ArrayList<>());
+                for (int i = 0; i < players.size() && i < this.config.get_max_displayed_players(); i++) {
+                    var player = players_array[i];
+                    server_ping.add_player(new GameProfile(player.getUniqueId(), player.getName()));
+                }
+                int remaining = players.size() - this.config.get_max_displayed_players();
+                if (remaining > 0)
+                    server_ping.add_player(new GameProfile(UUID.randomUUID(),
+                            format_string(cached_player.name, this.config.get_remaining_players_message()).replace("%remaining%", String.valueOf(remaining))));
+            } else if (playerlist_mode == PlayerlistMode.DISPLAY_NAME) {
+                server_ping.set_players(new ArrayList<>());
+                for (int i = 0; i < players.size() && i < this.config.get_max_displayed_players(); i++) {
+                    var player = players_array[i];
+                    server_ping.add_player(new GameProfile(player.getUniqueId(), player.getDisplayName()));
+                }
+                int remaining = players.size() - this.config.get_max_displayed_players();
+                if (remaining > 0)
+                    server_ping.add_player(new GameProfile(UUID.randomUUID(),
+                            format_string(cached_player.name, this.config.get_remaining_players_message()).replace("%remaining%", String.valueOf(remaining))));
+            } else if (playerlist_mode == PlayerlistMode.CUSTOM) {
                 server_ping.set_players(new ArrayList<>());
                 config.get_playerlist_contents().forEach(line -> server_ping.add_player(new GameProfile(UUID.randomUUID(), format_string(cached_player.name, line))));
-            }
+            } else if (playerlist_mode == PlayerlistMode.DISABLED)
+                server_ping.set_players(new ArrayList<>());
 
             // Done, need to update the NMS object.
             packet.set_server_ping(server_ping);

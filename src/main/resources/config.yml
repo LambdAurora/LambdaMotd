@@ -102,9 +102,18 @@ playercount:
 
 # Customize the player list.
 playerlist:
-  # Enables the custom player list.
-  # Default: false
-  enable: false
+  # The mode of the player list.
+  #  - default mode don't touch to the player list at all.
+  #  - custom mode allows custom contents
+  #  - name will display the players name.
+  #  - display_name will display the players display name.
+  #  - disabled will totally disable the player list.
+  # Default: default
+  mode: default
+  # The maximum number of players that will be displayed in the playerlist (for modes NAME and DISPLAY_NAME)
+  max_displayed_players: 10
+  # The remaining players message.
+  remaining_players_message: 'And %remaining% more...'
   # The content of the custom player list.
   contents:
     - '&5======================================='

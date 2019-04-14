@@ -224,9 +224,20 @@ public class MotdConfig
             return get_custom_player_count_content();
     }
 
-    public boolean has_custom_playerlist()
+    public PlayerlistMode get_playerlist_mode()
     {
-        return this.config.get("playerlist.enable", false, boolean.class);
+        var playerlist_mode = this.config.get("playerlist.mode", "default");
+        return Arrays.stream(PlayerlistMode.values()).filter(mode -> mode.name().equalsIgnoreCase(playerlist_mode)).findFirst().orElse(PlayerlistMode.DEFAULT);
+    }
+
+    public int get_max_displayed_players()
+    {
+        return this.config.get("playerlist.max_displayed_players", 10, int.class);
+    }
+
+    public String get_remaining_players_message()
+    {
+        return this.config.get("playerlist.remaining_players_message", "And %remaining% more...");
     }
 
     public List<String> get_playerlist_contents()
